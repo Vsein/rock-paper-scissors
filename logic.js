@@ -6,49 +6,44 @@ function getComputerChoice() {
 }
 
 function playRound(playerSelection, computerSelection) {
+  const div = document.querySelector('#score');
+  div.innerHTML = `${playerSelection} vs ${computerSelection}!`;
   if (playerSelection == computerSelection) {
+    div.innerHTML += "<br>It's a tie!";
     return -1;
   } else if (
     playerSelection == "rock" && computerSelection == "scissors" ||
     playerSelection == "paper" && computerSelection == "rock" ||
     playerSelection == "scissors" && computerSelection == "paper"
   ) {
+    div.innerHTML += "<br>You win this round!";
     return 1;
   }
+  div.innerHTML += "<br>You lost this round!";
   return 0;
 }
 
 function game() {
-  let cnt = 0;
-  console.log(`We're playing rock-paper-scissors best of 5!`);
-  for (let i = 0; i < 5; i++) {
-    let isATie = true;
-    while (isATie) {
 
-      let playerSelection = prompt("What are you going to play?", "rock?").toLowerCase();
-      let computerSelection = getComputerChoice();
+  let playerScore = 0;
+  let computerScore = 0;
 
-      let thisRoundResult = playRound(playerSelection, computerSelection);
+  const rpi = document.querySelectorAll('button');
+  const div = document.querySelector('#score');
 
-      if (thisRoundResult == -1) {
-        console.log("It's a tie! Replay this round!");
-      } else if (thisRoundResult == 1) {
-        cnt++;
-        console.log(`You won the round ${i + 1}!`);
-      } else {
-        console.log(`You lost the round ${i + 1}!`);
-      }
-
-      isATie = thisRoundResult == -1;
-
+  rpi.forEach(button => button.addEventListener('click', (e) => {
+    console.log(e);
+    const result = playRound(button.id, getComputerChoice());
+    playerScore += result === 1;
+    computerScore += result === 0;
+    if (playerScore >= 3 || computerScore >= 3) {
+      div.innerHTML += `<br><br>The final score is ${playerScore}:${computerScore}`;
+      playerScore = 0;
+      computerScore = 0;
+    } else {
+      div.innerHTML += `<br><br>The current score is ${playerScore}:${computerScore}`;
     }
-    console.log(`The current score is ${cnt}:${i + 1 - cnt}`);
-  }
-  if (cnt >= 3) {
-    console.log("You won!");
-  } else {
-    console.log("You lost!");
-  }
+  }));
 }
 
 game();
