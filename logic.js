@@ -32,12 +32,11 @@ function game() {
   const div = document.querySelector('#score');
 
   rpi.forEach(button => button.addEventListener('click', (e) => {
-    console.log(e);
     const result = playRound(button.id, getComputerChoice());
     playerScore += result === 1;
     computerScore += result === 0;
     if (playerScore >= 3 || computerScore >= 3) {
-      div.innerHTML += `<br><br>The final score is ${playerScore}:${computerScore}`;
+      div.innerHTML += `<br><br>The final score is ${playerScore}:${computerScore}<br>Choose your next hand to replay`;
       playerScore = 0;
       computerScore = 0;
     } else {
